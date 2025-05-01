@@ -14,6 +14,7 @@ export default function Navbar({ user, setUser }) {
     <nav style={{ padding: '1rem', background: '#eee' }}>
       {user ? (
         <div>
+          <Link to="/about" style={{ marginRight: '1rem' }}>About</Link>
           <Link to="/dashboard" style={{ marginRight: '1rem' }}>Dashboard</Link>
           <Link to="/reservations" style={{ marginRight: '1rem' }}>Reservations</Link>
           <Link to="/add-vehicle" style={{ marginRight: '1rem' }}>Vehicles</Link>

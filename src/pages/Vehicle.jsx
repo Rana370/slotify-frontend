@@ -19,7 +19,7 @@ export default function Vehicle() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const token = localStorage.getItem('access');
+    const token = localStorage.getItem('token');
     console.log('🚨 Access token:', token); 
 
     setLoading(true);
