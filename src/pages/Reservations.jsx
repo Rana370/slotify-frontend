@@ -40,7 +40,7 @@ export default function Reservations() {
 
   return (
     <>
-      <Navbar />
+      
       <h2>Your Reservations</h2>
 
       <ul>

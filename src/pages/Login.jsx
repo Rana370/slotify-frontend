@@ -1,54 +1,51 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import * as usersAPI from '../utilities/users-api';
 
-export default function Login() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+export default function Login({ setUser }) {
   const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    username: '',
+    password: '',
+  });
+  const [error, setError] = useState('');
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    try {
-      const res = await fetch('http://127.0.0.1:8000/api/token/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
-      });
+  function handleChange(evt) {
+    setFormData({ ...formData, [evt.target.name]: evt.target.value });
+    setError('');
+  }
 
-      if (!res.ok) throw new Error('Invalid username or password');
-
-      const data = await res.json();
-
-      // Save tokens
-      localStorage.setItem('access', data.access);
-      localStorage.setItem('refresh', data.refresh);
-
-      navigate('/dashboard'); //  change it to reservation 
-    } catch (err) {
-      setError(err.message);
+  async function handleSubmit(evt) {
+    evt.preventDefault();
+    const success = await usersAPI.login(formData);
+    if (success) {
+      setUser({}); // You can decode token later for user info
+      navigate('/dashboard');
+    } else {
+      setError('Login failed. Check your credentials.');
     }
-  };
+  }
 
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
+    <div className="LoginPage">
+      <h2>Log In</h2>
+      <form onSubmit={handleSubmit}>
+        <label>Username</label>
         <input
-          type="text"
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          name="username"
+          value={formData.username}
+          onChange={handleChange}
           required
-        /><br />
+        />
+        <label>Password</label>
         <input
           type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
           required
-        /><br />
-        <button type="submit">Login</button>
+        />
+        <button type="submit">Log In</button>
       </form>
       {error && <p style={{ color: 'red' }}>{error}</p>}
     </div>
