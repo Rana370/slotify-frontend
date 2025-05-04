@@ -1,0 +1,63 @@
+.SignupWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    background-color: #F2E8CF;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+  
+  .SignupPage {
+    max-width: 400px;
+    width: 100%;
+    padding: 40px;
+    background-color: #F2E8CF;
+    border: 2px solid #588157;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .SignupPage h2 {
+    margin-bottom: 24px;
+    color: #588157;
+  }
+  
+  .SignupPage form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .SignupPage label {
+    text-align: left;
+    margin-bottom: 8px;
+    color: #6B4226;
+    font-weight: 600;
+  }
+  
+  .SignupPage input {
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #588157;
+    border-radius: 8px;
+    background-color: #EDE6D6;
+    color: #588157;
+  }
+  
+  .SignupPage button {
+    background-color: #588157;
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .SignupPage button:hover {
+    background-color: #A3B18A;
+  }
+  

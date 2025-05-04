@@ -1,0 +1,10 @@
+.Footer {
+    background-color: #A3B18A; /* Palm green */
+    color: #F2E8CF;
+    text-align: center;
+    padding: 30px;
+    font-size: 1rem;
+    margin-top: 60px;
+    box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.05);
+  }
+  

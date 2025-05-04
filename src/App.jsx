@@ -1,3 +1,5 @@
+import './static/base.css';
+
 import { Routes, Route } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
@@ -10,32 +12,28 @@ import Garages from './pages/Garages';
 import Reservations from './pages/Reservations';
 import Vehicle from './pages/Vehicle';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer'; // ✅ Import Footer
+import { getUser } from './utilities/users-api';
+
+
 
 export default function App() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(getUser());
 
-  // Optional: Check for token on load and auto-login
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      setUser({}); // or decode token later
-    }
-  }, []);
+
 
   return (
-    <div>
+    <div className="App">
       <Navbar user={user} setUser={setUser} />
       <Routes>
         {user ? (
           <>
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/*" element={<Dashboard />} />
             <Route path="/garages" element={<Garages />} />
             <Route path="/garage/:id" element={<GarageDetail />} />
             <Route path="/reservations" element={<Reservations />} />
             <Route path="/add-vehicle" element={<Vehicle />} />
             <Route path="/about" element={<About />} />
-            <Route path="/signup" element={<Signup setUser={setUser} />} />
-            <Route path="/login" element={<Login setUser={setUser} />} />
           </>
         ) : (
           <>
@@ -46,6 +44,7 @@ export default function App() {
           </>
         )}
       </Routes>
+      <Footer /> {/* ✅ Add Footer at the bottom */}
     </div>
   );
 }

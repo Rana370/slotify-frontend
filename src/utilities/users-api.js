@@ -1,14 +1,13 @@
 // src/utilities/users-api.js
 import sendRequest from './sendRequest';
-
-const BASE_URL = 'http://localhost:8000/api';
+const url = "/users"
 
 export async function signup(formData) {
   try {
-    const response = await sendRequest(`${BASE_URL}/register/`, 'POST', formData);
+    const response = await sendRequest(`${url}/register/`, 'POST', formData);
     localStorage.setItem('token', response.access);  // Save access token
-    console.log('form',formData)
-    console.log('response',response)
+    console.log(formData)
+    console.log("response:  ", response)
     return response.user;  // Return user info for setting state
   } catch (err) {
     localStorage.removeItem('token');
@@ -18,9 +17,9 @@ export async function signup(formData) {
 
 export async function login(credentials) {
   try {
-    const response = await sendRequest(`${BASE_URL}/token/`, 'POST', credentials);
+    const response = await sendRequest(`${url}/login/`, 'POST', credentials);
     localStorage.setItem('token', response.access);  // Save access token
-    return true;  // Indicate success
+    return response.user;  // Indicate success
   } catch (err) {
     return false;  // Indicate failure
   }
@@ -28,4 +27,20 @@ export async function login(credentials) {
 
 export function logout() {
   localStorage.removeItem('token');  // Clear token on logout
+}
+
+
+export async function getUser() {
+    try {
+        const token = localStorage.getItem('token');
+        if (token) {
+            const response = await sendRequest(`${url}/token/`)
+            localStorage.setItem('token', response.access);
+            return response.user
+        }
+        return null;
+    } catch (err) {
+        console.log(err);
+        return null;
+    }
 }

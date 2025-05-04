@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
+import sendRequest from '../utilities/sendRequest';
 
 export default function Reservations() {
   const [reservations, setReservations] = useState([]);
@@ -7,30 +8,35 @@ export default function Reservations() {
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
 
-  // Fetch reservations
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/reservations/')
-      .then(res => {
-        if (!res.ok) throw new Error('Failed to fetch reservations');
-        return res.json();
-      })
-      .then(data => setReservations(data))
-      .catch(err => setError(err.message || 'Something went wrong'))
-      .finally(() => setLoading(false));
+    const token = localStorage.getItem('token');
+    if (!token) {
+      setError('⚠️ Not authenticated. Please log in.');
+      setLoading(false);
+      return;
+    }
+
+    const fetchReservations = async () => {
+      try {
+        const data = await sendRequest('/api/reservations/');
+        setReservations(data);
+      } catch (err) {
+        setError(`Failed to fetch reservations: ${err.message}`);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchReservations();
   }, []);
 
-  // Cancel reservation
   const handleCancel = async (id) => {
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/reservations/${id}/`, {
-        method: 'DELETE',
-      });
-
-      if (!res.ok) throw new Error('Failed to cancel reservation');
-      setMessage('Reservation cancelled.');
+      await sendRequest(`/api/reservations/${id}/`, 'DELETE');
+      setMessage('✅ Reservation cancelled.');
       setReservations(prev => prev.filter(r => r.id !== id));
     } catch (err) {
-      setMessage(`Error: ${err.message}`);
+      setMessage(`❌ ${err.message}`);
     }
   };
 
@@ -40,7 +46,7 @@ export default function Reservations() {
 
   return (
     <>
-      
+     
       <h2>Your Reservations</h2>
 
       <ul>

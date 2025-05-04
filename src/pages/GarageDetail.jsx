@@ -1,77 +1,91 @@
+import '../static/GarageDetail.css';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import Navbar from '../components/Navbar';
+import * as garageAPI from "../utilities/garage-api";
+import * as vehiclesAPI from "../utilities/vehicles-api";
 
 export default function GarageDetail() {
   const { id } = useParams();
   const [garage, setGarage] = useState(null);
   const [vehicles, setVehicles] = useState([]);
   const [selectedVehicle, setSelectedVehicle] = useState('');
+  const [spots, setSpots] = useState([]);
   const [message, setMessage] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-
-  // ✅ Fetch garage details
+console.log(id)
   useEffect(() => {
-    fetch(`http://127.0.0.1:8000/api/garages/${id}/`)
-      .then(res => {
-        if (!res.ok) throw new Error('Failed to fetch garage');
-        return res.json();
-      })
-      .then(data => setGarage(data))
-      .catch(err => setError(err.message))
-      .finally(() => setLoading(false));
+    async function getGarageInfo() {
+      try {
+        const garageDetail = await garageAPI.show(id)
+        const garageSpots = await garageAPI.getSpots(id);
+        // const userVehicles = await vehiclesAPI.getUserVehicles();
+        console.log(garageDetail, garageSpots, "testing detail 23")
+        setGarage(garageDetail);
+        setSpots(garageSpots);
+        // setVehicles(userVehicles);
+      } catch (err) {
+        setGarage(null);
+        setSpots([]);
+        setVehicles([]);
+      }
+    }
+    getGarageInfo()
   }, [id]);
 
-  // ✅ Fetch user's vehicles
+
   useEffect(() => {
-    fetch('http://127.0.0.1:8000/api/vehicles/')
-      .then(res => {
-        if (!res.ok) throw new Error('Failed to fetch vehicles');
-        return res.json();
-      })
-      .then(data => setVehicles(data))
-      .catch(err => console.error('Vehicle fetch error:', err));
-  }, []);
-
-  // ✅ Handle reserve
-  const handleReserve = async (spotId) => {
-    if (!selectedVehicle) {
-      setMessage('⚠️ Please select a vehicle first.');
-      return;
+    async function getGarageInfo() {
+      try {
+        const garageDetail = await garageAPI.show(id);
+        const garageSpots = await garageAPI.getSpots(id);
+        const userVehicles = await vehiclesAPI.getUserVehicles();
+  
+        console.log(garageDetail, garageSpots, userVehicles, "testing detail 42");
+  
+        setGarage(garageDetail);
+        setSpots(garageSpots);
+        setVehicles(userVehicles);
+      } catch (err) {
+        setGarage(null);
+        setSpots([]);
+        setVehicles([]);
+      }
     }
+    getGarageInfo();
+  }, [id]);
+  
 
-    const now = new Date();
-    const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000);
 
-    const reservationData = {
-      parking_spot: spotId,
-      vehicle: selectedVehicle,
-      start_time: now.toISOString(),
-      end_time: oneHourLater.toISOString(),
-    };
+  
+  // // ✅ Handle reservation
+  // const handleReserve = async (spotId) => {
+  //   if (!selectedVehicle) {
+  //     setMessage('⚠️ Please select a vehicle first.');
+  //     return;
+  //   }
 
-    try {
-      const res = await fetch('http://127.0.0.1:8000/api/reservations/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(reservationData),
-      });
+  //   const now = new Date();
+  //   const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000);
 
-      if (!res.ok) throw new Error('Reservation failed.');
-      setMessage('✅ Reservation successful!');
-    } catch (err) {
-      setMessage(`❌ ${err.message}`);
-    }
-  };
+  //   const reservationData = {
+  //     parking_spot: spotId,
+  //     vehicle: selectedVehicle,
+  //     start_time: now.toISOString(),
+  //     end_time: oneHourLater.toISOString(),
+  //   };
 
-  if (loading) return <p>Loading garage...</p>;
-  if (error) return <p style={{ color: 'red' }}>{error}</p>;
+  //   try {
+  //     await sendRequest('http://127.0.0.1:8000/api/reservations/', 'POST', reservationData);
+  //     setMessage('✅ Reservation successful!');
+  //   } catch (err) {
+  //     setMessage(`❌ ${err.message}`);
+  //   }
+  // };
+
+
   if (!garage) return <p>No garage found.</p>;
 
   return (
     <>
-      
       <h2>{garage.name}</h2>
       <p>Location: {garage.location}</p>
 
@@ -83,31 +97,27 @@ export default function GarageDetail() {
         <option value="">-- Select Vehicle --</option>
         {vehicles.map((vehicle) => (
           <option key={vehicle.id} value={vehicle.id}>
-            {vehicle.plate_number} ({vehicle.type})
+            {vehicle.plate_number} ({vehicle.type || 'Vehicle'})
           </option>
         ))}
       </select>
 
       <h3>Parking Spots</h3>
-      {garage.parking_spots && garage.parking_spots.length > 0 ? (
-        <ul>
-          {garage.parking_spots.map((spot) => (
-            <li key={spot.id}>
-              Spot #{spot.number} — {spot.is_available ? 'Available' : 'Taken'}
-              {spot.is_available && (
-                <button
-                  onClick={() => handleReserve(spot.id)}
-                  style={{ marginLeft: '10px' }}
-                >
-                  Reserve
-                </button>
-              )}
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No parking spots found.</p>
-      )}
+      <div className="parking-grid">
+        {spots.length > 0 ? (
+          spots.map((spot) => (
+            <div
+              // key={spot.id}
+              // className={`spot ${spot.is_reserved ? 'reserved' : 'available'}`}
+              // onClick={() => !spot.is_reserved && handleReserve(spot.id)}
+            >
+              {spot.number}
+            </div>
+          ))
+        ) : (
+          <p>No parking spots found.</p>
+        )}
+      </div>
 
       {message && (
         <p style={{ marginTop: '20px', color: message.includes('✅') ? 'green' : 'red' }}>

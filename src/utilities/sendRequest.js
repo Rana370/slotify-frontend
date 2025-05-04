@@ -1,19 +1,23 @@
-// src/utilities/sendRequest.js
-export default async function sendRequest(url, method = 'GET', payload = null) {
-    const options = { method, headers: {} };
+export default async function sendRequest(url, method = 'GET', payload) {
+	const token = localStorage.getItem('token');
+	const options = { method };
   
-    if (payload) {
-      options.headers['Content-Type'] = 'application/json';
-      options.body = JSON.stringify(payload);
+	if (payload) {
+		options.headers = { 'Content-Type': 'application/json' };
+		options.body = JSON.stringify(payload);
+	}
+
+	if (token) {
+        options.headers = options.headers || {};
+        options.headers.Authorization = `Bearer ${token}`;
     }
-  
-    const token = localStorage.getItem('token');
-    if (token) {
-      options.headers['Authorization'] = `Bearer ${token}`;
-    }
-  
-    const res = await fetch(url, options);
-    if (!res.ok) throw new Error('Request failed');
-    return res.json();
-  }
-  
+
+    console.log(url, "testing")
+	try {
+		const res = await fetch(`http://127.0.0.1:8000${url}`, options);
+		if (res.ok) return res.json();
+	} catch (err) {
+		console.log(err, "error in send-request");
+		return err;
+	}
+}

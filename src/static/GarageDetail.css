@@ -1,0 +1,33 @@
+.parking-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .spot {
+    padding: 1rem;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s ease;
+    border: 2px solid transparent;
+  }
+  
+  .spot.available {
+    background-color: #d4edda;
+    border-color: #28a745;
+    color: #155724;
+  }
+  
+  .spot.reserved {
+    background-color: #f8d7da;
+    border-color: #dc3545;
+    color: #721c24;
+    cursor: not-allowed;
+  }
+  
