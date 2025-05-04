@@ -107,9 +107,9 @@ console.log(id)
         {spots.length > 0 ? (
           spots.map((spot) => (
             <div
-              // key={spot.id}
-              // className={`spot ${spot.is_reserved ? 'reserved' : 'available'}`}
-              // onClick={() => !spot.is_reserved && handleReserve(spot.id)}
+              key={spot.id}
+              className={`spot ${spot.is_reserved ? 'reserved' : 'available'}`}
+              onClick={() => !spot.is_reserved && handleReserve(spot.id)}
             >
               {spot.number}
             </div>

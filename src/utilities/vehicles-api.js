@@ -6,6 +6,11 @@ export function getUserVehicles() {
     return sendRequest(`${url}/users`)
 }
 
+export function create(formData) {
+    console.log(formData, "form info for new vehicle")
+    return sendRequest(`${url}/`, "POST", formData)
+}
+
 
 
 

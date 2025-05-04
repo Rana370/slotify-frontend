@@ -12,7 +12,7 @@ export default async function sendRequest(url, method = 'GET', payload) {
         options.headers.Authorization = `Bearer ${token}`;
     }
 
-    console.log(url, "testing")
+    
 	try {
 		const res = await fetch(`http://127.0.0.1:8000${url}`, options);
 		if (res.ok) return res.json();
