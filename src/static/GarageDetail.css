@@ -1,33 +1,153 @@
-.parking-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+/* === General Layout === */
+.garage-layout {
+    background-color: #dcdcdc;
+    padding: 2rem;
+    border-radius: 12px;
+    max-width: 700px;
+    margin: 2rem auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  /* === Parking Rows === */
+  .row {
+    display: flex;
+    justify-content: center;
     gap: 1rem;
-    margin-top: 2rem;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
+    margin-bottom: 1rem;
   }
   
   .spot {
-    padding: 1rem;
-    border-radius: 8px;
-    text-align: center;
-    cursor: pointer;
-    font-weight: bold;
-    transition: 0.3s ease;
-    border: 2px solid transparent;
-  }
-  
-  .spot.available {
+    width: 80px;
+    height: 120px;
     background-color: #d4edda;
-    border-color: #28a745;
+    border: 2px solid white;
     color: #155724;
+    border-radius: 4px;
+    font-family: monospace;
+    font-weight: bold;
+    font-size: 1.2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: inset 0 0 0 1px #888;
+    cursor: pointer;
+    transition: 0.2s;
   }
   
   .spot.reserved {
     background-color: #f8d7da;
-    border-color: #dc3545;
+    border-color: white;
     color: #721c24;
     cursor: not-allowed;
   }
+  
+  /* === Lane/Street Between Rows === */
+  .lane-street {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 1rem 0;
+    height: 50px;
+    position: relative;
+  }
+  
+  .lane-line {
+    width: 30%;
+    height: 4px;
+    background-color: #888;
+    margin: 0 10px;
+    border-radius: 2px;
+  }
+  
+  .lane-arrow {
+    font-size: 1.8rem;
+    color: #555;
+    opacity: 0.7;
+  }
+  
+  /* === Garage Header Section === */
+  .garage-header {
+    text-align: center;
+    margin-bottom: 13rem;
+  }
+  
+  .garage-header h2 {
+    font-size: 2.6rem;
+    color: #6b4226;
+    margin-bottom: 1.5rem; /* space between title and location */
+  }
+  
+  .garage-location-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+  
+  .location-text {
+    font-size: 1.4rem;
+    color: #444;
+    max-width: 300px;
+    text-align: left;
+    margin-top: 10rem
+  }
+  
+  .location-map iframe {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    margin-top: 10rem
+  }
+  
+  /* === Vehicle Selector Section === */
+  .vehicle-select-container {
+    text-align: center;
+    margin-bottom: 13rem;
+  }
+  
+  .vehicle-select-container h3 {
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: #588157;
+  }
+  
+  .vehicle-select-container select {
+    padding: 0.6rem 1rem;
+    font-size: 1.4rem;
+    border: 1px solid #aaa;
+    border-radius: 10px;
+    background-color: #fff;
+    font-family: inherit;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: border-color 0.2s;
+  }
+  
+  .vehicle-select-container select:focus {
+    border-color: #6b4226;
+    outline: none;
+  }
+  
+  /* === Section Headings (like Parking Spots) === */
+  .section-title {
+    font-size: 1.8rem;
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    color: #588157;
+  }
+  
+
+
+
+  .section-divider {
+    border: none;
+    border-top: 1px solid #6b4226;
+    width: 100%;
+    margin: 5rem auto;
+    opacity: 0.4;
+    border-radius: 100px;
+  }
+  
+  
   

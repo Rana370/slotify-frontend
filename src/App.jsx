@@ -18,11 +18,19 @@ import { getUser } from './utilities/users-api';
 
 
 export default function App() {
-  const [user, setUser] = useState(getUser());
+  const [user, setUser] = useState(null);
+  useEffect(()=>{
+    async function awaitUser() {
+      const res = await getUser()
+      console.log('app', user)
+      setUser(res)
+    }
+  awaitUser()
+  }, [])
 
-  
 
 
+console.log(user)
 
   return (
     <div className="App">
@@ -33,7 +41,7 @@ export default function App() {
             <Route path="/*" element={<Dashboard />} />
             <Route path="/garages" element={<Garages />} />
             <Route path="/garage/:id" element={<GarageDetail />} />
-            <Route path="/reservations" element={<Reservations />} />
+            <Route path="/reservations" element={<Reservations user={user}/>} />
             <Route path="/add-vehicle" element={<Vehicle />} />
             <Route path="/about" element={<About />} />
           </>

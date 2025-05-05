@@ -1,5 +1,9 @@
 import '../static/Dashboard.css';
 import { Link } from 'react-router-dom';
+import locationImg from '../assets/location.jpg';
+import paymentImg from '../assets/payment.jpg';
+import timeImg from '../assets/time.jpg';
+
 
 export default function Dashboard() {
   return (
@@ -31,13 +35,45 @@ export default function Dashboard() {
         ></iframe>
       </div>
 
+    
+      <h1 className="brand-name">
+          Simply Effective!<span></span>
+        </h1>
+
+      <div className="feature-layout">
+  <div className="feature-row">
+    <div className="feature-box">
+      <div className="feature-number">01</div>
+      <img src={locationImg} alt="Zone Selection" className="feature-img tall-img" />
+      <h3>Smart Location</h3>
+      <p>Automatically detects nearby parking zones based on your GPS.</p>
+    </div>
+    <div className="feature-box">
+      <div className="feature-number">02</div>
+      <img src={paymentImg} alt="Simple Payments" className="feature-img" />
+      <h3>Flexible Time</h3>
+      <p>Extend or shorten your parking session anytime via app.</p>
+    </div>
+    <div className="feature-box">
+      <div className="feature-number">03</div>
+      <img src={timeImg} alt="Time Extension" className="feature-img" />
+      <h3>Easy Payments</h3>
+      <p>Choose from secure and quick payment methods.</p>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
       {/* Action Boxes */}
       <div className="action-boxes">
         <Link to="/reservations" className="action-square">
-          📅 Reservations
-        </Link>
+        📅 Reserve Your Parking        </Link>
         <Link to="/add-vehicle" className="action-square">
-          🚘 Vehicle
+          🚘 Add Your Vehicle
         </Link>
       </div>
     </div>

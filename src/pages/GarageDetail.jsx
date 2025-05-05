@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import * as garageAPI from "../utilities/garage-api";
 import * as vehiclesAPI from "../utilities/vehicles-api";
+import * as reservationAPI from '../utilities/reservations-api'
 
 export default function GarageDetail() {
   const { id } = useParams();
@@ -11,26 +12,6 @@ export default function GarageDetail() {
   const [selectedVehicle, setSelectedVehicle] = useState('');
   const [spots, setSpots] = useState([]);
   const [message, setMessage] = useState('');
-console.log(id)
-  useEffect(() => {
-    async function getGarageInfo() {
-      try {
-        const garageDetail = await garageAPI.show(id)
-        const garageSpots = await garageAPI.getSpots(id);
-        // const userVehicles = await vehiclesAPI.getUserVehicles();
-        console.log(garageDetail, garageSpots, "testing detail 23")
-        setGarage(garageDetail);
-        setSpots(garageSpots);
-        // setVehicles(userVehicles);
-      } catch (err) {
-        setGarage(null);
-        setSpots([]);
-        setVehicles([]);
-      }
-    }
-    getGarageInfo()
-  }, [id]);
-
 
   useEffect(() => {
     async function getGarageInfo() {
@@ -38,9 +19,7 @@ console.log(id)
         const garageDetail = await garageAPI.show(id);
         const garageSpots = await garageAPI.getSpots(id);
         const userVehicles = await vehiclesAPI.getUserVehicles();
-  
-        console.log(garageDetail, garageSpots, userVehicles, "testing detail 42");
-  
+
         setGarage(garageDetail);
         setSpots(garageSpots);
         setVehicles(userVehicles);
@@ -52,78 +31,127 @@ console.log(id)
     }
     getGarageInfo();
   }, [id]);
-  
 
+  const handleReserve = async (spotId) => {
+    if (!selectedVehicle) {
+      setMessage('⚠️ Please select a vehicle first.');
+      return;
+    }
 
-  
-  // // ✅ Handle reservation
-  // const handleReserve = async (spotId) => {
-  //   if (!selectedVehicle) {
-  //     setMessage('⚠️ Please select a vehicle first.');
-  //     return;
-  //   }
+    const now = new Date();
+    const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000);
 
-  //   const now = new Date();
-  //   const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000);
+    const reservationData = {
+      parking_spot: spotId,
+      vehicle: selectedVehicle,
+      start_time: now.toISOString(),
+      end_time: oneHourLater.toISOString(),
+    };
 
-  //   const reservationData = {
-  //     parking_spot: spotId,
-  //     vehicle: selectedVehicle,
-  //     start_time: now.toISOString(),
-  //     end_time: oneHourLater.toISOString(),
-  //   };
+    try {
 
-  //   try {
-  //     await sendRequest('http://127.0.0.1:8000/api/reservations/', 'POST', reservationData);
-  //     setMessage('✅ Reservation successful!');
-  //   } catch (err) {
-  //     setMessage(`❌ ${err.message}`);
-  //   }
-  // };
+      const res = await reservationAPI.createReservation()
+      console.log('reservations', res)
+      if (!res.ok) throw new Error('Reservation failed.');
 
+      setMessage('✅ Reservation successful!');
+    } catch (err) {
+      setMessage(`❌ ${err.message}`);
+    }
+  };
 
   if (!garage) return <p>No garage found.</p>;
 
   return (
-    <>
-      <h2>{garage.name}</h2>
-      <p>Location: {garage.location}</p>
-
-      <h3>Select Your Vehicle</h3>
-      <select
-        value={selectedVehicle}
-        onChange={(e) => setSelectedVehicle(e.target.value)}
-      >
-        <option value="">-- Select Vehicle --</option>
-        {vehicles.map((vehicle) => (
-          <option key={vehicle.id} value={vehicle.id}>
-            {vehicle.plate_number} ({vehicle.type || 'Vehicle'})
-          </option>
-        ))}
-      </select>
-
-      <h3>Parking Spots</h3>
-      <div className="parking-grid">
-        {spots.length > 0 ? (
-          spots.map((spot) => (
-            <div
-              key={spot.id}
-              className={`spot ${spot.is_reserved ? 'reserved' : 'available'}`}
-              onClick={() => !spot.is_reserved && handleReserve(spot.id)}
-            >
-              {spot.number}
-            </div>
-          ))
-        ) : (
-          <p>No parking spots found.</p>
-        )}
+    <div className="parking-lot">
+      {/* Garage Name & Location */}
+      <div className="garage-header">
+        <h2>{garage.name}</h2>
+        <div className="garage-location-wrapper">
+          <div className="location-text">
+            <strong>Location:</strong><br />
+            {garage.location}
+          </div>
+          <div className="location-map">
+            <iframe
+              title="garage-map"
+              width="250"
+              height="150"
+              frameBorder="0"
+              style={{ border: 0, borderRadius: '8px' }}
+              src={`https://www.google.com/maps?q=${encodeURIComponent(garage.location)}&output=embed`}
+              allowFullScreen
+            ></iframe>
+          </div>
+        </div>
       </div>
 
+      {/* Divider Line */}
+      <hr className="section-divider" />
+
+      {/* Vehicle Selector */}
+      <div className="vehicle-select-container">
+        <h3>Select Your Vehicle</h3>
+        <select
+          value={selectedVehicle}
+          onChange={(e) => setSelectedVehicle(e.target.value)}
+        >
+          <option value="">-- Select Vehicle --</option>
+          {vehicles.map((vehicle) => (
+            <option key={vehicle.id} value={vehicle.id}>
+              {vehicle.plate_number} ({vehicle.type || 'Vehicle'})
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Parking Layout */}
+      <h3 className="section-title">Parking Spots</h3>
+      <div className="garage-layout">
+        {/* Top row (A spots) */}
+        <div className="row upper-row">
+          {spots
+            .filter((s) => s.number.startsWith('A'))
+            .map((spot) => (
+              <div
+                key={spot.id}
+                className={`spot ${spot.is_reserved ? 'reserved' : 'available'}`}
+                onClick={() => !spot.is_reserved && handleReserve(spot.id)}
+              >
+                {spot.number}
+              </div>
+            ))}
+        </div>
+
+        {/* Middle lane with arrow */}
+        <div className="lane-street">
+          <div className="lane-line" />
+          <div className="lane-arrow">⬆️</div>
+          <div className="lane-line" />
+        </div>
+
+        {/* Bottom row (B spots) */}
+        <div className="row lower-row">
+          {spots
+            .filter((s) => s.number.startsWith('B'))
+            .map((spot) => (
+              <div
+                key={spot.id}
+                className={`spot ${spot.is_reserved ? 'reserved' : 'available'}`}
+                onClick={() => !spot.is_reserved && handleReserve(spot.id)}
+              >
+                {spot.number}
+              </div>
+            ))}
+        </div>
+      </div>
+
+      {/* Success/Error Message */}
       {message && (
-        <p style={{ marginTop: '20px', color: message.includes('✅') ? 'green' : 'red' }}>
+        <p style={{ marginTop: '20px', color: message.includes('✅') ? 'green' : 'red', textAlign: 'center' }}>
           {message}
         </p>
       )}
-    </>
+    </div>
   );
 }

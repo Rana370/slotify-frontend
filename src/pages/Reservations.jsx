@@ -1,8 +1,10 @@
+
 import { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import sendRequest from '../utilities/sendRequest';
+import * as reservationAPI from '../utilities/reservations-api'
 
-export default function Reservations() {
+export default function Reservations({user}) {
   const [reservations, setReservations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -18,8 +20,10 @@ export default function Reservations() {
 
     const fetchReservations = async () => {
       try {
-        const data = await sendRequest('/api/reservations/');
-        setReservations(data);
+        const res = await reservationAPI.getAllReservations()
+        // create an array using arr.filter to only show reservations that belong to logged in user
+        const myReservations = res.filter(r => r.user === user.id)
+        setReservations(myReservations);
       } catch (err) {
         setError(`Failed to fetch reservations: ${err.message}`);
       } finally {

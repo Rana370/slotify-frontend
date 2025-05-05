@@ -4,7 +4,7 @@ import * as vehicleAPI from "../utilities/vehicles-api";
 
 export default function Vehicle() {
   const [formData, setFOrmData] = useState({
-    plate: "",
+    plate_number: "",
     model: "",
     type: "",
     color: "#000000",
@@ -29,7 +29,7 @@ export default function Vehicle() {
       e.preventDefault();
       const newVehicle = await vehicleAPI.create(formData);
       console.log(newVehicle)
-      navigate('/reservations');
+      navigate('/garages');
     } catch (err) {
       console.log(err)
     }
@@ -45,7 +45,7 @@ export default function Vehicle() {
             placeholder="Plate Number"
             value={formData.plate}
             onChange={handleChange}
-            name="plate"
+            name="plate_number"
             required
           /><br />
 

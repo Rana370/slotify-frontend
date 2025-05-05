@@ -3,7 +3,7 @@ const url = "/vehicles";
 
 
 export function getUserVehicles() {
-    return sendRequest(`${url}/users`)
+    return sendRequest(`${url}/`)
 }
 
 export function create(formData) {
