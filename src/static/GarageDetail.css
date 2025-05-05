@@ -161,3 +161,154 @@
   
   
   
+
+
+
+  .vehicle-date-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+  
+  .card-box {
+    background-color: #F2E8CF;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 280px;
+  }
+  
+  .card-box label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  
+  .card-box select,
+  .card-box input {
+    width: 100%;
+    padding: 0.4rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+  }
+  
+  .check-reservation-btn {
+    padding: 12px 24px;
+    font-size: 1.1rem;
+    background-color: #6b3a26;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .check-reservation-btn:hover {
+    background-color: #4e2f1a;
+  }
+  
+
+
+  .vehicle-date-heading {
+    text-align: center;
+    font-size: 1.8rem;
+    color: #6b4226;
+    margin-bottom: 1.5rem;
+  }
+  
+  .vehicle-date-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+  }
+  
+  .card-box {
+    background-color: #F2E8CF;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 280px;
+  }
+  
+  .card-box label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  
+  .card-box select,
+  .card-box input {
+    width: 100%;
+    padding: 0.4rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+  }
+  
+  .check-reservation-container {
+    text-align: center;
+    margin-top: 2rem;
+  }
+  
+  .check-reservation-btn {
+    padding: 12px 24px;
+    font-size: 1.1rem;
+    background-color: #6b3a26;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .check-reservation-btn:hover {
+    background-color: #4e2f1a;
+  }
+  
+  .reservation-message {
+    margin-top: 20px;
+    text-align: center;
+    font-weight: bold;
+  }
+  
+  .price-section {
+    display: flex;
+    justify-content: center;
+    margin: 4rem auto;
+  }
+  
+  .price-card {
+    background-color: #EDE6D6;
+    padding: 2rem;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .price-card h3 {
+    color: #6b4226;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .price-grid {
+    display: flex;
+    justify-content: space-around;
+    gap: 2rem;
+    font-size: 1.2rem;
+    color: #588157;
+  }
+  
+  .price-grid p {
+    margin: 0.3rem 0;
+  }
+  

@@ -1,10 +1,10 @@
-
 import { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import sendRequest from '../utilities/sendRequest';
-import * as reservationAPI from '../utilities/reservations-api'
+import * as reservationAPI from '../utilities/reservations-api';
+import * as garageAPI from '../utilities/garage-api';
 
-export default function Reservations({user}) {
+export default function Reservations({ user }) {
   const [reservations, setReservations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -20,10 +20,25 @@ export default function Reservations({user}) {
 
     const fetchReservations = async () => {
       try {
-        const res = await reservationAPI.getAllReservations()
-        // create an array using arr.filter to only show reservations that belong to logged in user
-        const myReservations = res.filter(r => r.user === user.id)
-        setReservations(myReservations);
+        const res = await reservationAPI.getAllReservations();
+        const myReservations = res.filter(r => r.user === user.id);
+
+        const reservationsWithGarageNames = await Promise.all(
+          myReservations.map(async (r) => {
+            let garageName = 'N/A';
+            if (r.garage) {
+              try {
+                const garage = await garageAPI.show(r.garage);
+                garageName = garage.name;
+              } catch (err) {
+                console.error(`Failed to fetch garage ${r.garage}`, err);
+              }
+            }
+            return { ...r, garage_name: garageName };
+          })
+        );
+
+        setReservations(reservationsWithGarageNames);
       } catch (err) {
         setError(`Failed to fetch reservations: ${err.message}`);
       } finally {
@@ -32,7 +47,7 @@ export default function Reservations({user}) {
     };
 
     fetchReservations();
-  }, []);
+  }, [user.id]);
 
   const handleCancel = async (id) => {
     try {
@@ -46,18 +61,16 @@ export default function Reservations({user}) {
 
   if (loading) return <p>Loading reservations...</p>;
   if (error) return <p style={{ color: 'red' }}>{error}</p>;
-  if (reservations?.length === 0) return <p>No active reservations.</p>;
+  if (reservations.length === 0) return <p>No active reservations.</p>;
 
   return (
     <>
-     
       <h2>Your Reservations</h2>
-
       <ul>
-        {reservations?.map(res => (
+        {reservations.map(res => (
           <li key={res.id}>
             <p>
-              <strong>Garage:</strong> {res.parking_spot?.garage?.name || 'N/A'}<br />
+              <strong>Garage:</strong> {res.garage_name}<br />
               <strong>Spot:</strong> {res.parking_spot}<br />
               <strong>Start:</strong> {new Date(res.start_time).toLocaleString()}<br />
               <strong>End:</strong> {new Date(res.end_time).toLocaleString()}
@@ -66,7 +79,6 @@ export default function Reservations({user}) {
           </li>
         ))}
       </ul>
-
       {message && <p style={{ marginTop: '20px' }}>{message}</p>}
     </>
   );
