@@ -46,7 +46,7 @@ export default function Reservations({user}) {
 
   if (loading) return <p>Loading reservations...</p>;
   if (error) return <p style={{ color: 'red' }}>{error}</p>;
-  if (reservations.length === 0) return <p>No active reservations.</p>;
+  if (reservations?.length === 0) return <p>No active reservations.</p>;
 
   return (
     <>
@@ -54,11 +54,11 @@ export default function Reservations({user}) {
       <h2>Your Reservations</h2>
 
       <ul>
-        {reservations.map(res => (
+        {reservations?.map(res => (
           <li key={res.id}>
             <p>
               <strong>Garage:</strong> {res.parking_spot?.garage?.name || 'N/A'}<br />
-              <strong>Spot:</strong> {res.parking_spot?.number}<br />
+              <strong>Spot:</strong> {res.parking_spot}<br />
               <strong>Start:</strong> {new Date(res.start_time).toLocaleString()}<br />
               <strong>End:</strong> {new Date(res.end_time).toLocaleString()}
             </p>

@@ -40,7 +40,7 @@ console.log(user)
           <>
             <Route path="/*" element={<Dashboard />} />
             <Route path="/garages" element={<Garages />} />
-            <Route path="/garage/:id" element={<GarageDetail />} />
+            <Route path="/garage/:id" element={<GarageDetail user={user} />} />
             <Route path="/reservations" element={<Reservations user={user}/>} />
             <Route path="/add-vehicle" element={<Vehicle />} />
             <Route path="/about" element={<About />} />
