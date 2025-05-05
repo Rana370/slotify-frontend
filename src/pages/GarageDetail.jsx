@@ -5,7 +5,7 @@ import * as garageAPI from "../utilities/garage-api";
 import * as vehiclesAPI from "../utilities/vehicles-api";
 import * as reservationAPI from '../utilities/reservations-api';
 
-export default function GarageDetail({user}) {
+export default function GarageDetail({ user }) {
   const { id } = useParams();
   const [garage, setGarage] = useState(null);
   const [vehicles, setVehicles] = useState([]);
@@ -13,6 +13,8 @@ export default function GarageDetail({user}) {
   const [spots, setSpots] = useState([]);
   const [message, setMessage] = useState('');
   const [reservationDate, setReservationDate] = useState('');
+  const [startTime, setStartTime] = useState('');
+  const [endTime, setEndTime] = useState('');
 
   useEffect(() => {
     async function getGarageInfo() {
@@ -34,42 +36,43 @@ export default function GarageDetail({user}) {
   }, [id]);
 
   const handleReserve = async (spotId) => {
-    if (!selectedVehicle) {
-      setMessage('⚠️ Please select a vehicle first.');
+    if (!selectedVehicle || !reservationDate || !startTime || !endTime) {
+      setMessage('⚠️ Please select vehicle, date, start and end time.');
       return;
     }
 
-    const now = new Date();
-    const oneHourLater = new Date(now.getTime() + 60 * 60 * 1000);
+    const startDateTime = new Date(`${reservationDate}T${startTime}`);
+    const endDateTime = new Date(`${reservationDate}T${endTime}`);
 
     const reservationData = {
       parking_spot: spotId,
       vehicle: selectedVehicle,
-      start_time: now.toISOString(),
-      end_time: oneHourLater.toISOString(),
+      start_time: startDateTime.toISOString(),
+      end_time: endDateTime.toISOString(),
+      garage: garage.id,
       user_id: user.id
     };
 
     try {
       const res = await reservationAPI.createReservation(reservationData);
-      console.log('form data', reservationData)
+      console.log('form data', reservationData);
       console.log('response', res);
       if (res) {
         setMessage('✅ Reservation successful!');
       } else {
-        setMessage(`❌ Reservation failed. Something went wrong!`);
+        setMessage('❌ Reservation failed. Something went wrong!');
       }
     } catch (err) {
       console.error(err);
       setMessage(`❌ Reservation failed. ${err.message}`);
-    }    
+    }
   };
 
   if (!garage) return <p>No garage found.</p>;
 
   return (
     <div className="parking-lot">
-      {/* Garage Name & Location */}
+      {/* Garage Header */}
       <div className="garage-header">
         <h2>{garage.name}</h2>
         <div className="garage-location-wrapper">
@@ -91,10 +94,9 @@ export default function GarageDetail({user}) {
         </div>
       </div>
 
-      {/* Divider Line */}
       <hr className="section-divider" />
 
-      {/* Vehicle Selector and Date Picker in Two Columns */}
+      {/* Selection Form */}
       <div className="vehicle-date-section">
         <h3 className="vehicle-date-heading" style={{ textAlign: 'center' }}>Choose Your</h3>
         <div className="vehicle-date-wrapper" style={{ display: 'flex', justifyContent: 'center', gap: '4rem', marginTop: '1rem' }}>
@@ -113,66 +115,73 @@ export default function GarageDetail({user}) {
             </select>
           </div>
           <div className="date-column" style={{ textAlign: 'center' }}>
-            <label htmlFor="reservation-date"><strong>Date</strong></label><br />
+            <label><strong>Date</strong></label><br />
             <input
               type="date"
-              id="reservation-date"
               value={reservationDate}
               onChange={(e) => setReservationDate(e.target.value)}
+            />
+            <br /><br />
+            <label><strong>Start Time</strong></label><br />
+            <input
+              type="time"
+              value={startTime}
+              onChange={(e) => setStartTime(e.target.value)}
+            />
+            <br /><br />
+            <label><strong>End Time</strong></label><br />
+            <input
+              type="time"
+              value={endTime}
+              onChange={(e) => setEndTime(e.target.value)}
             />
           </div>
         </div>
       </div>
 
-      {/* Divider Line */}
       <hr className="section-divider" />
 
       {/* Parking Layout */}
       <h3 className="section-title">Parking Spots</h3>
       <div className="garage-layout">
         <div className="row upper-row">
-          {spots
-            .filter((s) => s.number.startsWith('A'))
-            .map((spot) => (
-              <div
-                key={spot.id}
-                className={`spot ${spot.is_reserved ? 'reserved' : 'available'}`}
-                onClick={() => !spot.is_reserved && handleReserve(spot.id)}
-              >
-                {spot.number}
-              </div>
-            ))}
+          {spots.filter(s => s.number.startsWith('A')).map((spot) => (
+            <div
+              key={spot.id}
+              className={`spot ${spot.is_reserved ? 'reserved' : 'available'}`}
+              onClick={() => !spot.is_reserved && handleReserve(spot.id)}
+            >
+              {spot.number}
+            </div>
+          ))}
         </div>
-        
+
         <div className="lane-street">
-          
           <div className="lane-arrow-left">⬅⬅⬅⬅⬅⬅⬅⬅⬅⬅⬅⬅⬅⬅⬅⬅⬅⬅⬅⬅⬅⬅⬅⬅⬅⬅⬅⬅</div>
-          
         </div>
+
         <div className="row lower-row">
-          {spots
-            .filter((s) => s.number.startsWith('B'))
-            .map((spot) => (
-              <div
-                key={spot.id}
-                className={`spot ${spot.is_reserved ? 'reserved' : 'available'}`}
-                onClick={() => !spot.is_reserved && handleReserve(spot.id)}
-              >
-                {spot.number}
-              </div>
-            ))}
+          {spots.filter(s => s.number.startsWith('B')).map((spot) => (
+            <div
+              key={spot.id}
+              className={`spot ${spot.is_reserved ? 'reserved' : 'available'}`}
+              onClick={() => !spot.is_reserved && handleReserve(spot.id)}
+            >
+              {spot.number}
+            </div>
+          ))}
         </div>
       </div>
+
       {message && (
         <p style={{ marginTop: '20px', color: message.includes('✅') ? 'green' : 'red', textAlign: 'center' }}>
           {message}
         </p>
       )}
 
-      {/* Divider Line */}
       <hr className="section-divider" />
 
-      {/* Pricing Info Below Parking Layout */}
+      {/* Price Info */}
       <div className="garage-location-wrapper">
         <div className="location-text-box" style={{ margin: '0 auto' }}>
           <strong style={{ display: 'block', textAlign: 'center', marginBottom: '1rem' }}>Price</strong>
@@ -192,8 +201,6 @@ export default function GarageDetail({user}) {
           </div>
         </div>
       </div>
-
-      
     </div>
   );
 }

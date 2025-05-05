@@ -6,7 +6,6 @@ export async function signup(formData) {
   try {
     const response = await sendRequest(`${url}/register/`, 'POST', formData);
     localStorage.setItem('token', response.access);  // Save access token
-    console.log(formData)
     console.log("response:  ", response)
     return response.user;  // Return user info for setting state
   } catch (err) {

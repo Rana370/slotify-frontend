@@ -9,8 +9,8 @@ export default function Garages() {
   useEffect(() => {
     async function getGarages() {
       try {
-        console.log("should be getting garages")
         const allGarages = await garageAPI.getGarages();
+        console.log("should be getting garages", allGarages)
         setGarages(allGarages)
       } catch (err) {
         console.log(err)
