@@ -11,8 +11,9 @@ export default function Vehicle() {
     type: "",
     color: "#000000",
   });
-
   const [vehicles, setVehicles] = useState([]);
+  const [editingId, setEditingId] = useState(null);
+
   const navigate = useNavigate();
 
   const vehicleTypes = ['Sedan', 'SUV', 'Truck', 'Coupe', 'Convertible', 'Electric', 'Van'];
@@ -21,18 +22,42 @@ export default function Vehicle() {
     'Nissan', 'Kia', 'Mazda', 'Land Rover'
   ];
 
-  function handleChange(evt) {
+  const handleChange = (evt) => {
     setFormData({ ...formData, [evt.target.name]: evt.target.value });
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const newVehicle = await vehicleAPI.create(formData);
+      if (editingId) {
+        await vehicleAPI.updateVehicle(editingId, formData);
+        setEditingId(null);
+      } else {
+        await vehicleAPI.create(formData);
+      }
       setFormData({ plate_number: "", model: "", type: "", color: "#000000" });
       fetchVehicles();
     } catch (err) {
       console.log(err);
+    }
+  };
+
+  const handleEdit = (vehicle) => {
+    setFormData({
+      plate_number: vehicle.plate_number,
+      model: vehicle.model,
+      type: vehicle.type,
+      color: vehicle.color,
+    });
+    setEditingId(vehicle.id);
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await vehicleAPI.deleteVehicle(id);
+      fetchVehicles();
+    } catch (err) {
+      console.error("Error deleting vehicle:", err);
     }
   };
 
@@ -57,7 +82,7 @@ export default function Vehicle() {
         </div>
 
         <div className="form-section">
-          <h2>Create a Vehicle</h2>
+          <h2>{editingId ? "Edit Vehicle" : "Create a Vehicle"}</h2>
           <form onSubmit={handleSubmit}>
             <input
               type="text"
@@ -105,7 +130,18 @@ export default function Vehicle() {
               />
             </label>
 
-            <button type="submit">Add Vehicle</button>
+            <button type="submit">{editingId ? "Update Vehicle" : "Add Vehicle"}</button>
+            {editingId && (
+              <button
+                type="button"
+                onClick={() => {
+                  setEditingId(null);
+                  setFormData({ plate_number: "", model: "", type: "", color: "#000000" });
+                }}
+              >
+                Cancel
+              </button>
+            )}
           </form>
         </div>
       </div>
@@ -120,16 +156,16 @@ export default function Vehicle() {
           ) : (
             vehicles.map((v) => (
               <div key={v.id} className="vehicle-card">
-                <p><strong>Garage:</strong> {v.reservation?.garage?.name || 'N/A'}</p>
                 <p><strong>Plate Number:</strong> {v.plate_number}</p>
                 <p><strong>Model:</strong> {v.model}</p>
                 <p><strong>Type:</strong> {v.type}</p>
                 <p><strong>Color:</strong> 
-                  <span
-                    className="color-box"
-                    style={{ backgroundColor: v.color }}
-                  ></span>
+                  <span className="color-box" style={{ backgroundColor: v.color }}></span>
                 </p>
+                <div className="vehicle-actions">
+                  <button onClick={() => handleEdit(v)}>Edit</button>
+                  <button onClick={() => handleDelete(v.id)}>Delete</button>
+                </div>
               </div>
             ))
           )}
