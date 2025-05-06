@@ -12,7 +12,14 @@ export function create(formData) {
 }
 
 
-
+export function updateVehicle(id, formData) {
+    console.log(formData, "updating vehicle with id", id);
+    return sendRequest(`${url}/${id}/`, "PUT", formData);
+  }
+  
+  export function deleteVehicle(id) {
+    return sendRequest(`${url}/${id}/`, "DELETE");
+  }
 
 
 

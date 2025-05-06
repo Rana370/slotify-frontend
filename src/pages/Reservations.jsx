@@ -133,7 +133,6 @@ export default function Reservations({ user }) {
 
   return (
     <>
-      <h2 className="reservations-title">Your Reservations</h2>
 
       {current && (
         <div className="newest-reservation-section">
