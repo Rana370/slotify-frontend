@@ -2,8 +2,10 @@
     display: flex;
     justify-content: space-between; /* logo left, links right */
     align-items: center;
-    padding: 16px 32px;
-    background-color: #A3B18A;
+    padding: 1px 32px;
+    background-color: #F2E8CF;
+    border-bottom: 1.5px solid #6B4226; /* Thin line at the bottom */
+
   }
   
   .nav-links {
@@ -25,7 +27,7 @@
   }
   
   .Navbar-logo img {
-    height: 100px;
+    height: 80px;
     width: auto;
     object-fit: contain;
   }
@@ -33,7 +35,7 @@
   .Navbar a {
     position: relative;
     margin-left: 24px;
-    color: #F2E8CF; 
+    color: #6B4226; 
     font-weight: 600;
     text-decoration: none;
     text-transform: uppercase;
@@ -50,13 +52,13 @@
     height: 2px;
     bottom: -4px;
     left: 0;
-    background-color: #F2E8CF;
+    background-color: #6B4226;
     transform-origin: right;
     transition: transform 0.3s ease-out;
   }
   
   .Navbar a:hover {
-    color: #F2E8CF;
+    color: #6B4226;
   }
   
   .Navbar a:hover::after {
@@ -65,7 +67,7 @@
   }
   
   .Navbar button {
-    background-color: #6B4226; 
+    background-color: hsl(24, 48%, 28%); 
     color: #F2E8CF;
     border: none;
     padding: 8px 16px;
@@ -79,7 +81,7 @@
   }
   
   .Navbar button:hover {
-    background-color: #588157; /* Olive green */
+    background-color: #A3B18A; /* Olive green */
   }
   
 

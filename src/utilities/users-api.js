@@ -1,45 +1,45 @@
 // src/utilities/users-api.js
 import sendRequest from './sendRequest';
-const url = "/users"
 
+const BASE_URL = "/users";
+
+// Signup - adjust endpoint if your backend differs
 export async function signup(formData) {
   try {
-    const response = await sendRequest(`${url}/register/`, 'POST', formData);
-    localStorage.setItem('token', response.access);  // Save access token
-    console.log("response:  ", response)
-    return response.user;  // Return user info for setting state
+    const response = await sendRequest(`${BASE_URL}/register/`, 'POST', formData);
+    localStorage.setItem('token', response.access);  // Save JWT access token
+    return response.user || true;
   } catch (err) {
     localStorage.removeItem('token');
     return null;
   }
 }
 
+// Login - if using SimpleJWT, change URL to /api/token/
 export async function login(credentials) {
   try {
-    const response = await sendRequest(`${url}/login/`, 'POST', credentials);
-    localStorage.setItem('token', response.access);  // Save access token
-    return response.user;  // Indicate success
+    const response = await sendRequest(`${BASE_URL}/login/`, 'POST', credentials);
+    localStorage.setItem('token', response.access);  // Save JWT token
+    return response.user || true;
   } catch (err) {
-    return false;  // Indicate failure
+    return false;
   }
 }
 
+// Logout
 export function logout() {
-  localStorage.removeItem('token');  // Clear token on logout
+  localStorage.removeItem('token');
 }
 
-
+// Get current user info (requires token)
 export async function getUser() {
-    try {
-        const token = localStorage.getItem('token');
-        if (token) {
-            const response = await sendRequest(`${url}/token/`)
-            localStorage.setItem('token', response.access);
-            return response.user
-        }
-        return null;
-    } catch (err) {
-        console.log(err);
-        return null;
-    }
+  try {
+    const token = localStorage.getItem('token');
+    if (!token) return null;
+
+    const response = await sendRequest(`${BASE_URL}/me/`, 'GET');  // adjust URL as needed
+    return response;
+  } catch (err) {
+    return null;
+  }
 }

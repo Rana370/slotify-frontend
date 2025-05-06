@@ -4,7 +4,6 @@ import locationImg from '../assets/location.jpg';
 import paymentImg from '../assets/payment.jpg';
 import timeImg from '../assets/time.jpg';
 
-
 export default function Dashboard() {
   return (
     <div className="Dashboard">
@@ -18,10 +17,14 @@ export default function Dashboard() {
           <span className="fade-in-word">Your</span>{' '}
           <span className="fade-in-word special-word">Slot</span>
         </p>
-        <h4 className="map-label">📍 SDA Riyadh Parking Location</h4>
       </div>
 
-      {/* Map section */}
+      {/* Map Section */}
+      <div>
+        <h4 className="map-label fade-in-delay">
+          Welcome To SDA Parking Location 📍
+        </h4>
+      </div>
       <div className="map-container">
         <iframe
           title="SDA Riyadh Location"
@@ -35,43 +38,45 @@ export default function Dashboard() {
         ></iframe>
       </div>
 
-    
+
+
+
+
       <h1 className="brand-name">
-          Simply Effective!<span></span>
-        </h1>
+        Simply Effective!<span></span>
+      </h1>
 
+      {/* Feature Section */}
       <div className="feature-layout">
-  <div className="feature-row">
-    <div className="feature-box">
-      <div className="feature-number">01</div>
-      <img src={locationImg} alt="Zone Selection" className="feature-img tall-img" />
-      <h3>Smart Location</h3>
-      <p>Automatically detects nearby parking zones based on your GPS.</p>
-    </div>
-    <div className="feature-box">
-      <div className="feature-number">02</div>
-      <img src={paymentImg} alt="Simple Payments" className="feature-img" />
-      <h3>Flexible Time</h3>
-      <p>Extend or shorten your parking session anytime via app.</p>
-    </div>
-    <div className="feature-box">
-      <div className="feature-number">03</div>
-      <img src={timeImg} alt="Time Extension" className="feature-img" />
-      <h3>Easy Payments</h3>
-      <p>Choose from secure and quick payment methods.</p>
-    </div>
-  </div>
-</div>
-
-
-
-
-
+        <div className="feature-row">
+          <div className="feature-box">
+            <div className="feature-number">01</div>
+            <img src={locationImg} alt="Zone Selection" className="feature-img tall-img" />
+            <h3>Smart Location</h3>
+            <p>Automatically detects nearby parking zones based on your GPS.</p>
+          </div>
+          <div className="feature-box">
+            <div className="feature-number">02</div>
+            <img src={paymentImg} alt="Simple Payments" className="feature-img" />
+            <h3>Flexible Time</h3>
+            <p>Extend or shorten your parking session anytime via app.</p>
+          </div>
+          <div className="feature-box">
+            <div className="feature-number">03</div>
+            <img src={timeImg} alt="Time Extension" className="feature-img" />
+            <h3>Easy Payments</h3>
+            <p>Choose from secure and quick payment methods.</p>
+          </div>
+        </div>
+      </div>
+      
+      <hr className="dashboard-divider" />
 
       {/* Action Boxes */}
       <div className="action-boxes">
         <Link to="/reservations" className="action-square">
-        📅 Reserve Your Parking        </Link>
+          📅 Reserve Your Parking
+        </Link>
         <Link to="/add-vehicle" className="action-square">
           🚘 Add Your Vehicle
         </Link>
