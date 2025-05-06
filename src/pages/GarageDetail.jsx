@@ -37,6 +37,20 @@ export default function GarageDetail({ user }) {
     getGarageInfo();
   }, [id]);
 
+  const vehicleHasReservation = async (vehicleId, startTime, endTime) => {
+    try {
+      const reservations = await reservationAPI.getReservationsByVehicle(vehicleId);
+      return reservations.some(res => {
+        const resStart = new Date(res.start_time);
+        const resEnd = new Date(res.end_time);
+        return (startTime < resEnd && endTime > resStart);
+      });
+    } catch (err) {
+      console.error("Error checking vehicle reservations:", err);
+      return false;
+    }
+  };
+
   const handleReserve = async (spotId) => {
     if (!selectedVehicle || !reservationDate || !startTime || !endTime) {
       setMessage('⚠️ Please select vehicle, date, start and end time.');
@@ -45,6 +59,12 @@ export default function GarageDetail({ user }) {
 
     const startDateTime = new Date(`${reservationDate}T${startTime}`);
     const endDateTime = new Date(`${reservationDate}T${endTime}`);
+
+    const hasReservation = await vehicleHasReservation(selectedVehicle, startDateTime, endDateTime);
+    if (hasReservation) {
+      setMessage('❌ This vehicle already has a reservation during this time.');
+      return;
+    }
 
     const reservationData = {
       parking_spot: spotId,
@@ -68,7 +88,6 @@ export default function GarageDetail({ user }) {
 
   return (
     <div className="parking-lot">
-      {/* Garage Header */}
       <div className="garage-header">
         <h2>{garage.name}</h2>
         <div className="garage-location-wrapper">
@@ -92,10 +111,8 @@ export default function GarageDetail({ user }) {
 
       <hr className="section-divider" />
 
-      {/* Selection Form */}
       <h3 className="vehicle-date-heading">Choose Your</h3>
       <div className="vehicle-date-wrapper">
-        {/* Vehicle Card */}
         <div className="card-box">
           <label>Vehicle</label>
           <select value={selectedVehicle} onChange={(e) => setSelectedVehicle(e.target.value)}>
@@ -108,7 +125,6 @@ export default function GarageDetail({ user }) {
           </select>
         </div>
 
-        {/* Date/Time Card */}
         <div className="card-box">
           <label>Date</label>
           <input
@@ -116,14 +132,12 @@ export default function GarageDetail({ user }) {
             value={reservationDate}
             onChange={(e) => setReservationDate(e.target.value)}
           />
-
           <label>Start Time</label>
           <input
             type="time"
             value={startTime}
             onChange={(e) => setStartTime(e.target.value)}
           />
-
           <label>End Time</label>
           <input
             type="time"
@@ -135,7 +149,6 @@ export default function GarageDetail({ user }) {
 
       <hr className="section-divider" />
 
-      {/* Parking Layout */}
       <h3 className="section-title">Parking Spots</h3>
       <div className="garage-layout">
         <div className="row upper-row">
@@ -167,7 +180,6 @@ export default function GarageDetail({ user }) {
         </div>
       </div>
 
-      {/* Check Reservation Button */}
       <div className="check-reservation-container">
         <button className="check-reservation-btn" onClick={() => navigate('/reservations')}>
           Check Your Reservation
@@ -180,7 +192,6 @@ export default function GarageDetail({ user }) {
 
       <hr className="section-divider" />
 
-      {/* Price Section */}
       <div className="price-section">
         <div className="price-card">
           <h3>Price</h3>

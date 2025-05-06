@@ -1,0 +1,136 @@
+.vehicle-wrapper {
+    padding: 2rem;
+  }
+  
+  .top-row {
+    display: flex;
+    gap: 3rem;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  
+  .image-section {
+    flex: 1;
+    max-width: 450px;
+  }
+  
+  .vehicle-image {
+    width: 110%;
+    max-width: 450px;
+    object-fit: contain;
+    padding-top: 20%;
+    
+  }
+  
+  .form-section {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    max-width: 500px;
+  }
+  
+  form input,
+  form select {
+    display: block;
+    width: 100%;
+    margin-bottom: 1rem;
+    padding: 0.7rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+  
+  .color-picker {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  input[type="color"] {
+    padding: 0;
+    width: 80px;
+    height: 25px;
+    border: none;
+    background: none;
+    cursor: pointer;
+  }
+  
+  button {
+    background-color: #6b4226;
+    color: white;
+    padding: 0.7rem 1.5rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #6b4226;
+  }
+  
+  .vehicle-divider {
+    margin: 2rem 0;
+    border: none;
+    height: 2px;
+    border-top: 1px solid #6b4226;
+    opacity: 0.4;
+    margin: 5rem auto;
+
+  }
+  
+  .vehicle-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: start;
+    color: #588157;
+  }
+  
+  .vehicle-card {
+    background-color: #fff;
+    padding: 1.2rem;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    min-width: 220px;
+    max-width: 250px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  
+  
+  .color-box {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    margin-top: 0.5rem;
+    border: 1px solid #000;
+  }
+  
+
+
+  .vehicle-gallery-wrapper {
+    margin-top: 2rem;
+    text-align: center;
+  }
+  
+  .vehicle-section-header {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 1.2rem;
+    color: #6b4226;
+  }
+  
+  .vehicle-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center; /* centers the vehicle cards */
+  }
+  
+
+  

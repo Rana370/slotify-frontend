@@ -1,0 +1,115 @@
+.reservations-title {
+    text-align: center;
+    margin: 20px 0 10px;
+    font-size: 24px;
+  }
+  
+  .newest-reservation-section {
+    padding: 20px;
+  }
+  
+  .older-reservations-section {
+    padding: 20px;
+  }
+  
+  .older-reservations-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+  
+  .reservation-card {
+    background-color: lightgray;
+    border-left: 6px solid #588157;
+    padding: 18px;
+    border-radius: 12px;
+    width: 260px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s;
+    
+  }
+  
+  .reservation-card:hover {
+    transform: scale(1.02);
+  }
+  
+  .reservation-card p {
+    margin: 4px 0;
+    color: #588157;
+  }
+  
+  .reservation-card button {
+    margin-top: 10px;
+    padding: 6px 12px;
+    background-color: #6B4226;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .reservation-card button:hover {
+    background-color: #4a2e1d;
+  }
+  
+  .newest {
+    background-color: #EDE6D6;
+    border-left: 6px solid #A3B18A;
+  }
+  
+  .reservation-message {
+    text-align: center;
+    margin-top: 20px;
+    font-weight: bold;
+  }
+  
+
+
+  .divider-line {
+    border: none;
+    border-top: 1px solid #6b4226;
+    width: 70%;
+    margin: 5rem auto;
+    opacity: 0.4;
+    border-radius: 100px;
+  }
+  
+
+
+  .reservations-title {
+    text-align: center;
+    margin: 20px 0 10px;
+    font-size: 24px;
+    color: #6B4226; 
+  }
+  
+  .section-subtitle {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #588157; 
+  }
+  
+
+
+  .newest-reservation-section {
+    text-align: center;
+  }
+  .other-upcoming-reservations {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .older-reservations-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center; /* 👈 CENTER horizontally */
+    gap: 20px;
+    margin-top: 15px;
+  }
+  
+  .section-subtitle {
+    font-size: 22px;
+    margin-bottom: 15px;
+    color: #588157; /* or any color you prefer */
+  }
+  
