@@ -36,8 +36,7 @@ export async function getUser() {
   try {
     const token = localStorage.getItem('token');
     if (!token) return null;
-
-    const response = await sendRequest(`${BASE_URL}/me/`, 'GET');  // adjust URL as needed
+    const response = await sendRequest(`${BASE_URL}/token/`, 'GET');  // adjust URL as needed
     return response;
   } catch (err) {
     return null;

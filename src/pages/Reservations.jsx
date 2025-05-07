@@ -33,8 +33,9 @@ export default function Reservations({ user }) {
         vehicles.forEach(v => {
           vehicleMap[v.id] = v.plate_number || v.plateNumber || 'No Plate';
         });
+        console.log(res)
 
-        const myReservations = res.filter(r => r.user === user.id);
+        const myReservations = res.filter(r => r.user == user.id);
 
         const reservationsWithDetails = await Promise.all(
           myReservations.map(async (r) => {

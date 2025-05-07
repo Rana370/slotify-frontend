@@ -18,12 +18,12 @@ import { getUser } from './utilities/users-api';
 
 
 export default function App() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState({});
   useEffect(()=>{
     async function awaitUser() {
       const res = await getUser()
       console.log('app', user)
-      setUser(res)
+      setUser(res.user)
     }
   awaitUser()
   }, [])

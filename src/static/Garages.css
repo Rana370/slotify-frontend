@@ -23,7 +23,7 @@
   }
   
   .garages-list li {
-    background-color: #A3B18A;
+    background-color: #F2E8CF;
     padding: 2rem;
     width: 300px;
     border-radius: 12px;
@@ -34,7 +34,7 @@
   
   .garages-list li:hover {
     transform: translateY(-5px);
-    background-color: #e3dacd;
+    background-color: #A3B18A;
   }
   
   .garages-list a {
